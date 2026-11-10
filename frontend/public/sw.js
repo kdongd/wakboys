@@ -1,5 +1,5 @@
 /* WAKBOYS service worker: web push + offline app shell. */
-const SHELL = 'wak-shell-v4';
+const SHELL = 'wak-shell-v5';
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(SHELL).then((c) => c.addAll(['/', '/manifest.webmanifest'])).then(() => self.skipWaiting()));

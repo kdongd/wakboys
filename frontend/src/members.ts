@@ -63,10 +63,19 @@ export const CHARACTERS: Record<string, CharacterInfo> = {
     ],
     reactionFile: { happy: 'happy', cool: 'mask', surprised: 'surprised', angry: 'angry' },
   },
-  choiseungbin: { ...STD },
-  kimchanghyun: { ...STD },
-  kimdaehee: { ...STD },
-  jangikjun: { ...STD },
+  choiseungbin: { prop: '결혼반지', ...STD },
+  kimchanghyun: { prop: '비보잉', ...STD },
+  kimdaehee: { prop: '수경', ...STD },
+  jangikjun: {
+    prop: '방귀',
+    expressions: [
+      { file: 'happy', label: '웃음' },
+      { file: 'cool', label: '멋짐' },
+      { file: 'surprised', label: '놀람' },
+      { file: 'smell', label: '냄새' },
+    ],
+    reactionFile: { happy: 'happy', cool: 'cool', surprised: 'surprised', angry: 'smell' },
+  },
 }
 
 /** 김동욱(운영자) 먼저, 나머지는 이름(가나다)순. Collection numbers and lists follow this. */
