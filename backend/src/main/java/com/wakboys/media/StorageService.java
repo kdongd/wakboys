@@ -69,9 +69,10 @@ public class StorageService {
         if (!remote()) {
             return "/api/uploads/local/" + key;
         }
+        // Only Content-Type is signed: every signed header must be sent by the browser exactly,
+        // so extra ones (e.g. Cache-Control) would make R2 reject the upload with 403.
         PutObjectRequest put = PutObjectRequest.builder()
                 .bucket(props.r2().bucket()).key(key).contentType(contentType)
-                .cacheControl("public, max-age=31536000, immutable")
                 .build();
         return presigner.presignPutObject(b -> b.signatureDuration(Duration.ofMinutes(30)).putObjectRequest(put))
                 .url().toString();
