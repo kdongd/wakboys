@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: wakboys
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/wakboys}
+    username: ${DATABASE_USERNAME:wakboys}
+    password: ${DATABASE_PASSWORD:wakboys}
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      idle-timeout: 120000
+      max-lifetime: 600000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        default_batch_fetch_size: 100
+  flyway:
+    enabled: true
+  servlet:
+    multipart:
+      enabled: false
+  jackson:
+    default-property-inclusion: non_null
+    time-zone: Asia/Seoul
+
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
+  compression:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+app:
+  base-url: ${APP_BASE_URL:http://localhost:5173}
+  dev-login: ${DEV_LOGIN:false}
+  jwt:
+    secret: ${JWT_SECRET:local-dev-secret-change-me-local-dev-secret-change-me}
+    access-ttl-minutes: 60
+    refresh-ttl-days: 30
+  cookie-secure: ${COOKIE_SECURE:true}
+  kakao:
+    rest-api-key: ${KAKAO_REST_API_KEY:}
+    client-secret: ${KAKAO_CLIENT_SECRET:}
+    js-key: ${KAKAO_JS_KEY:}
+  r2:
+    account-id: ${R2_ACCOUNT_ID:}
+    access-key-id: ${R2_ACCESS_KEY_ID:}
+    secret-access-key: ${R2_SECRET_ACCESS_KEY:}
+    bucket: ${R2_BUCKET:wakboys}
+    public-base-url: ${R2_PUBLIC_BASE_URL:}
+  push:
+    public-key: ${VAPID_PUBLIC_KEY:}
+    private-key: ${VAPID_PRIVATE_KEY:}
+    subject: ${VAPID_SUBJECT:mailto:admin@wakboys.app}
+
+logging:
+  level:
+    com.wakboys: INFO
