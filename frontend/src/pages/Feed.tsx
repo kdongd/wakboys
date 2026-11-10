@@ -11,6 +11,7 @@ import { Avatar, confirmAsk, Empty, Name, Sheet, Spinner } from '../components/u
 import type { Post, Social } from '../types'
 import { uploadFiles } from '../upload'
 import { ago } from '../util'
+import { PageHead } from '../components/World'
 
 type Page = { items: Post[]; nextCursor?: number }
 
@@ -35,12 +36,7 @@ export default function Feed() {
 
   return (
     <div className="page">
-      <div className="topbar">
-        <div>
-          <div className="eyebrow">NEWS</div>
-          <div className="title">소식</div>
-        </div>
-      </div>
+      <PageHead icon="💬" title="소식" />
 
       <button className="card row" style={{ width: '100%', textAlign: 'left' }} onClick={() => setComposing(true)}>
         {me && <Avatar m={me.member} size={38} />}

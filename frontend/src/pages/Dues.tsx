@@ -6,6 +6,7 @@ import { useErrorToast, useToast } from '../components/Toast'
 import { Avatar, confirmAsk, Empty, Sheet, Spinner } from '../components/ui'
 import type { DuesOverview } from '../types'
 import { won, ymLabel } from '../util'
+import { PageHead } from '../components/World'
 
 export default function Dues() {
   const { me } = useAuth()
@@ -45,17 +46,15 @@ export default function Dues() {
 
   return (
     <div className="page">
-      <div className="topbar">
-        <div>
-          <div className="eyebrow">DUES</div>
-          <div className="title">회비</div>
-        </div>
-        <button className="chip" style={{ background: '#fff' }} onClick={() => (canManage ? setCfgOpen(true) : undefined)}>
+      <PageHead
+        icon="💰"
+        title="회비"
+        right={<button className="chip" style={{ background: '#fff' }} onClick={() => (canManage ? setCfgOpen(true) : undefined)}>
           월 {won(d.config.monthlyAmount)}{canManage ? ' · 설정' : ''}
-        </button>
-      </div>
+        </button>}
+      />
 
-      <div className="box" style={{ background: 'linear-gradient(160deg,#2b2d38,#14151b)', padding: 18 }}>
+      <div className="box" style={{ background: 'linear-gradient(160deg,#8a6cf2,#5b45c9)', padding: 18 }}>
         <div className="small bold" style={{ opacity: 0.7 }}>모임 통장 잔액</div>
         <div style={{ fontSize: 32, fontWeight: 900, marginTop: 4 }}>{won(d.balance)}</div>
         <div className="row mt12" style={{ gap: 6 }}>

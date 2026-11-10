@@ -56,7 +56,7 @@ export default function Invite() {
           <div className="eyebrow">YOUR FIGURE</div>
           <div className="title mt8">{preview.name}님 맞으세요?</div>
         </div>
-        <div className="box mt24" style={{ height: 380, background: `linear-gradient(170deg, ${preview.themeColor}, #191b22 130%)` }}>
+        <div className="box mt24" style={{ height: 380, background: `linear-gradient(170deg, ${preview.themeColor}, #3d2f73 130%)` }}>
           <div className="window" style={{ left: '50%', transform: 'translateX(-50%)', width: 220, top: 20, bottom: 20 }}>
             <img src={img.full(preview.slug)} alt="" style={{ position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)', height: '92%' }} />
             <div className="gloss" />

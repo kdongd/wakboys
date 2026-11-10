@@ -25,15 +25,15 @@ export default function MemberDetail() {
   return (
     <div className="page no-tab">
       <Back to="/members" label="컬렉션" />
-      <div className="box mt8" style={{ background: `linear-gradient(170deg, ${m.themeColor}, ${m.themeColor}dd 55%, #191b22 160%)`, paddingBottom: 14, boxShadow: '0 10px 24px rgba(0,0,0,.18)' }}>
-        <div style={{ background: '#191b22', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div className="box mt8" style={{ background: `linear-gradient(170deg, ${m.themeColor}, ${m.themeColor}dd 55%, #3d2f73 160%)`, paddingBottom: 14, boxShadow: '0 10px 24px rgba(0,0,0,.18)' }}>
+        <div style={{ background: '#3d2f73', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.14em', color: isLight(m.themeColor) || m.themeColor === '#e45806' || m.themeColor === '#cc1b1b' ? m.themeColor : '#c9c9ff' }}>WAKBOYS FIGURE</div>
             <div style={{ fontSize: 21, fontWeight: 900 }}>No.{String(no).padStart(2, '0')} {m.name}</div>
           </div>
           <div className="row" style={{ gap: 4 }}>
             {m.admin && <span className="badge admin">운영자</span>}
-            {m.treasurer && <span className="badge" style={{ background: '#fff', color: '#191b22' }}>총무</span>}
+            {m.treasurer && <span className="badge" style={{ background: '#fff', color: '#3d2f73' }}>총무</span>}
           </div>
         </div>
 
@@ -49,13 +49,13 @@ export default function MemberDetail() {
                   <img src={icon} alt="" style={{ position: 'absolute', inset: 12, width: 'calc(100% - 24px)', height: 'calc(100% - 24px)', objectFit: 'contain' }} />
                   <div className="gloss" />
                 </div>
-                <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.06em', opacity: 0.9, color: isLight(m.themeColor) ? '#191b22' : '#fff' }}>
+                <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.06em', opacity: 0.9, color: isLight(m.themeColor) ? '#3d2f73' : '#fff' }}>
                   ACCESSORY
                   <div style={{ fontSize: 14, fontWeight: 900, letterSpacing: 0, marginTop: 2 }}>{info?.prop}</div>
                 </div>
               </>
             )}
-            <div style={{ background: '#191b22', borderRadius: 12, padding: 10, fontSize: 12, fontWeight: 800, lineHeight: 1.7, marginTop: 'auto' }}>
+            <div style={{ background: '#3d2f73', borderRadius: 12, padding: 10, fontSize: 12, fontWeight: 800, lineHeight: 1.7, marginTop: 'auto' }}>
               {card.birthMonth ? `생일 ${card.birthMonth}.${card.birthDay}` : '생일 미등록'}
               <br />여행 {stats.trips}회
               <br />사진 {stats.photos}
@@ -66,7 +66,7 @@ export default function MemberDetail() {
           </div>
         </div>
 
-        <div style={{ margin: '12px 14px 0', background: 'rgba(255,255,255,.88)', borderRadius: 14, padding: '10px 12px', color: '#191b22' }}>
+        <div style={{ margin: '12px 14px 0', background: 'rgba(255,255,255,.88)', borderRadius: 14, padding: '10px 12px', color: '#3d2f73' }}>
           <div className="small bold brown">표정 파츠 {info?.expressions.length ?? 4}종 포함</div>
           <div className="between mt8">
             {(info?.expressions ?? []).map((e) => (

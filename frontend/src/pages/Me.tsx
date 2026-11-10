@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { useAuth } from '../auth'
 import { useErrorToast, useToast } from '../components/Toast'
-import { Avatar, Back, Name } from '../components/ui'
+import { Clouds, PageHead } from '../components/World'
+import { img } from '../members'
 import { currentSubscription, disablePush, enablePush, needsInstall, pushSupported } from '../push'
 
 export default function Me() {
@@ -53,18 +54,25 @@ export default function Me() {
 
   if (!me) return null
   return (
-    <div className="page no-tab">
-      <Back label="뒤로" />
-      <div className="card row mt8">
-        <Avatar m={me.member} size={56} />
-        <div className="grow">
-          <div style={{ fontSize: 18 }}><Name m={me.member} /></div>
-          <div className="small muted bold">{me.member.admin ? '운영자' : me.member.treasurer ? '총무' : '멤버'}</div>
+    <div className="page">
+      <PageHead icon="🙋" title="내 프로필" />
+      <div className="profile-sky">
+        <Clouds />
+        <div className="profile-ring" style={{ boxShadow: `0 0 0 5px #fff, 0 0 0 9px ${me.member.themeColor}` }}>
+          <img src={img.profile(me.member.slug)} alt="" />
         </div>
-        <Link to={`/members/${me.member.slug}`} className="chip">내 피규어</Link>
+        <div className="profile-name">
+          {me.member.name}
+          {img.icon(me.member.slug) && <img src={img.icon(me.member.slug)!} alt="" />}
+        </div>
+        <div className="row" style={{ justifyContent: 'center', gap: 6, marginTop: 6 }}>
+          {me.member.admin && <span className="badge admin">운영자</span>}
+          {me.member.treasurer && <span className="badge">총무</span>}
+          <Link to={`/members/${me.member.slug}`} className="chip">내 피규어 보기 ›</Link>
+        </div>
       </div>
 
-      <div className="section-h"><span>생일</span></div>
+      <div className="section-h"><span>🎂 생일</span></div>
       <div className="card">
         <div className="row">
           <select className="select" value={month} onChange={(e) => setMonth(e.target.value)}>
@@ -80,7 +88,7 @@ export default function Me() {
         <div className="small muted bold mt8">생일 아침 9시에 다른 멤버들에게 알림이 가요</div>
       </div>
 
-      <div className="section-h"><span>알림</span></div>
+      <div className="section-h"><span>🔔 알림</span></div>
       <div className="card">
         {!pushSupported() ? (
           <div className="small bold muted">이 브라우저는 알림을 지원하지 않아요</div>
@@ -111,7 +119,7 @@ export default function Me() {
 
       {me.member.admin && (
         <>
-          <div className="section-h"><span>운영자</span></div>
+          <div className="section-h"><span>👑 운영자</span></div>
           <Link to="/admin" className="card between" style={{ display: 'flex' }}>
             <span className="bold">멤버 · 초대 코드 · 총무 관리</span>
             <span className="brown bold">›</span>

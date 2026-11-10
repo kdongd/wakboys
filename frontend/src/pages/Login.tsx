@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { api, type LoginResponse } from '../api'
 import { useAuth } from '../auth'
-import { Lineup } from '../components/Edition'
+import { Clouds, GroupShot, Logo } from '../components/World'
 import { useErrorToast } from '../components/Toast'
 import { ORDER } from '../members'
 
@@ -37,28 +37,26 @@ export default function Login() {
     }
   }
 
+  // bigger figures on taller phones, but never wider than the screen
+  const groupScale = Math.max(1.5, Math.min(2.1, (window.innerHeight - 380) / 220, (Math.min(window.innerWidth, 480) - 32) / 165))
+
   return (
-    <div className="page no-tab" style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ textAlign: 'center', paddingTop: '9vh' }}>
-        <div style={{ fontSize: 44, fontWeight: 900, letterSpacing: '-0.04em' }}>WAKBOYS</div>
+    <div className="login-world">
+      <Clouds />
+      <span className="cloud" style={{ top: 150, left: 30, transform: 'scale(.7)', opacity: 0.85 }} />
+      <div className="login-logo">
+        <Logo size={50} />
       </div>
-
-      <div className="box" style={{ height: 270, marginTop: '6vh', background: 'linear-gradient(160deg,#2c5fd6,#1a2f7a)' }}>
-        <div style={{ position: 'absolute', top: 14, left: 16, fontSize: 11, fontWeight: 800, letterSpacing: '.12em', opacity: 0.85 }}>
-          LIMITED · 8 FIGURES
-        </div>
-        <div className="window" style={{ left: 14, right: 14, top: 40, bottom: 14 }}>
-          <Lineup scale={1.32} />
-          <div className="gloss" />
-        </div>
+      <div className="login-hill" />
+      <div className="login-group">
+        <GroupShot back={groupScale} front={groupScale * 1.17} />
       </div>
-
-      <div style={{ marginTop: 'auto', paddingTop: 28 }}>
+      <div className="login-bottom">
         <button className="btn kakao" onClick={kakao}>
           <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#191919" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.4.3.7.6.5l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z" /></svg>
           카카오로 시작하기
         </button>
-        <div className="center small muted mt12 bold">처음이면 운영자에게 받은 개인 초대 코드를 입력하게 돼요</div>
+        <div className="center small mt12 bold" style={{ color: '#2f6b2a' }}>처음이면 운영자에게 받은 개인 초대 코드를 입력하게 돼요</div>
         {cfg.data?.devLogin && (
           <div className="card mt16">
             <div className="card-h">개발용 로그인</div>

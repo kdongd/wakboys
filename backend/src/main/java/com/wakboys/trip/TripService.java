@@ -39,7 +39,7 @@ public class TripService {
      */
     public record TripDto(Long id, int year, String season, String title, String destination,
                           LocalDate startDate, LocalDate endDate, int edition, String status, Long dday,
-                          long mediaCount, List<String> coverThumbs, MemberDto receiver) {}
+                          long mediaCount, List<String> coverThumbs, MemberDto receiver, Double lat, Double lng) {}
 
     public record Progress(int done, int total) {}
 
@@ -47,7 +47,7 @@ public class TripService {
                              Progress checklist, long expenseTotal) {}
 
     public record TripRequest(Integer year, String season, String title, String destination,
-                              LocalDate startDate, LocalDate endDate) {}
+                              LocalDate startDate, LocalDate endDate, Double lat, Double lng) {}
 
     @Transactional(readOnly = true)
     public List<TripDto> list() {
@@ -169,6 +169,13 @@ public class TripService {
         if (r.destination() != null) t.setDestination(r.destination().isBlank() ? null : r.destination().trim());
         if (r.startDate() != null) t.setStartDate(r.startDate());
         if (r.endDate() != null) t.setEndDate(r.endDate());
+        if (r.lat() != null && r.lng() != null) {
+            if (r.lat() < 32 || r.lat() > 39.5 || r.lng() < 124 || r.lng() > 132) {
+                throw ApiException.badRequest("지도 위치가 국내 범위를 벗어났어요");
+            }
+            t.setLat(r.lat());
+            t.setLng(r.lng());
+        }
         if (t.getStartDate() != null && t.getEndDate() != null && t.getEndDate().isBefore(t.getStartDate())) {
             throw ApiException.badRequest("끝나는 날이 시작일보다 빨라요");
         }
@@ -221,7 +228,7 @@ public class TripService {
         return new TripDto(t.getId(), t.getYear(), t.getSeason(), t.getTitle(), t.getDestination(),
                 t.getStartDate(), t.getEndDate(), editions.getOrDefault(t.getId(), 0), status, dday,
                 mediaRepository.countByTripId(t.getId()), mediaService.coverThumbs(t.getId(), 4),
-                members.dto(receiverId(t)));
+                members.dto(receiverId(t)), t.getLat(), t.getLng());
     }
 
     /** Who collects the settlement: chosen receiver, else the 총무, else the 운영자. */

@@ -40,10 +40,10 @@ export default function App() {
         <Route path="/dues" element={<Dues />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/members" element={<Collection />} />
+        <Route path="/me" element={<Me />} />
       </Route>
       <Route path="/trips/:id" element={<TripDetail />} />
       <Route path="/members/:slug" element={<MemberDetail />} />
-      <Route path="/me" element={<Me />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/login" element={<Navigate to="/" replace />} />
       <Route path="/auth/kakao/callback" element={<Navigate to="/" replace />} />

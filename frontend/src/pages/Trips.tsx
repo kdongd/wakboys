@@ -3,8 +3,11 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { api } from '../api'
 import { MiniBox } from '../components/Edition'
 import { useErrorToast } from '../components/Toast'
-import { Empty, Spinner } from '../components/ui'
+import { Clouds, PageHead } from '../components/World'
+import TripMap from '../components/TripMap'
+import { Avatar, Empty, Spinner } from '../components/ui'
 import type { Trip } from '../types'
+import { useMembers } from '../useMembers'
 import { ddayLabel, range, seasonKo } from '../util'
 import { TripForm, type TripInput } from './TripForm'
 
@@ -13,6 +16,7 @@ export default function Trips() {
   const nav = useNavigate()
   const qc = useQueryClient()
   const err = useErrorToast()
+  const { cards } = useMembers()
   const q = useQuery({ queryKey: ['trips'], queryFn: () => api.get<Trip[]>('/api/trips') })
   const open = params.get('new') === '1'
 
@@ -26,45 +30,81 @@ export default function Trips() {
     onError: err,
   })
 
-  const byYear = new Map<number, Trip[]>()
-  ;(q.data ?? []).forEach((t) => byYear.set(t.year, [...(byYear.get(t.year) ?? []), t]))
+  const linked = cards.filter((c) => c.linked).map((c) => c.member)
+  const upcoming = (q.data ?? []).find((t) => t.status === 'UPCOMING' || t.status === 'ONGOING' || t.status === 'TBD')
 
   return (
     <div className="page">
-      <div className="topbar">
-        <div>
-          <div className="eyebrow">EDITIONS</div>
-          <div className="title">에디션</div>
+      <PageHead
+        icon="🧳"
+        title="모임 & 여행"
+        right={<button className="btn sm" onClick={() => setParams({ new: '1' })}>+ 새 여행</button>}
+      />
+
+      <Link to={upcoming ? `/trips/${upcoming.id}?tab=vote` : '/trips?new=1'} className="sky-banner">
+        <Clouds />
+        <div className="bubble">
+          {upcoming ? '다음 여행지를\n함께 정해요! ✈️' : '첫 여행을\n만들어볼까요? ✈️'}
         </div>
-        <button className="btn sm" onClick={() => setParams({ new: '1' })}>+ 새 에디션</button>
-      </div>
+        <span className="sky-banner-emoji">🏝️</span>
+      </Link>
+
+      {q.data && q.data.length > 0 && (
+        <div className="mt16">
+          <TripMap trips={q.data} />
+        </div>
+      )}
 
       {!q.data ? (
         <Spinner />
       ) : q.data.length === 0 ? (
-        <Empty>첫 에디션을 만들어보세요</Empty>
+        <Empty>아직 여행이 없어요</Empty>
       ) : (
-        [...byYear.entries()].map(([year, trips]) => (
-          <div key={year}>
-            <div className="section-h"><span>{year}</span><small>{trips.length}개 에디션</small></div>
-            <div className="stack">
-              {trips.map((t) => (
-                <Link key={t.id} to={`/trips/${t.id}`} className="card row" style={{ padding: 12, gap: 14 }}>
+        <div className="stack mt16">
+          {q.data.map((t) => {
+            const active = t.status === 'UPCOMING' || t.status === 'ONGOING'
+            return (
+              <div key={t.id} className="card trip-card">
+                <Link to={`/trips/${t.id}`} className="row" style={{ gap: 14, alignItems: 'flex-start' }}>
                   <MiniBox trip={t} link={false} />
                   <div className="grow">
-                    <div className="small bold brown">SERIES {String(t.edition).padStart(2, '0')} · {seasonKo(t.season)}</div>
-                    <div className="bold ellipsis" style={{ fontSize: 17, marginTop: 2 }}>{t.title}</div>
-                    <div className="small muted bold mt8">{t.destination ?? '여행지 미정'} · {range(t.startDate, t.endDate)}</div>
-                    <div className="row mt8" style={{ gap: 6 }}>
-                      <span className={'chip' + (t.status === 'UPCOMING' || t.status === 'ONGOING' ? ' on' : '')}>{ddayLabel(t.dday, t.status)}</span>
-                      {t.mediaCount > 0 && <span className="chip">📸 {t.mediaCount}</span>}
+                    <div className="between">
+                      <span className="small bold" style={{ color: 'var(--purple)' }}>
+                        {t.year} {seasonKo(t.season)} · SERIES {String(t.edition).padStart(2, '0')}
+                      </span>
+                      {active ? (
+                        <span className="chip crown">👑 {ddayLabel(t.dday, t.status)}</span>
+                      ) : (
+                        <span className="chip">{ddayLabel(t.dday, t.status)}</span>
+                      )}
                     </div>
+                    <div className="bold ellipsis" style={{ fontSize: 18, marginTop: 4 }}>
+                      {t.title} {t.season === 'SUMMER' ? '🏖️' : '⛄'}
+                    </div>
+                    <div className="small muted bold" style={{ marginTop: 3 }}>
+                      {t.destination ?? '여행지 미정'} · {range(t.startDate, t.endDate)}
+                    </div>
+                    {t.mediaCount > 0 && <div className="small bold mt8" style={{ color: 'var(--sub)' }}>📸 사진·영상 {t.mediaCount}</div>}
                   </div>
                 </Link>
-              ))}
-            </div>
-          </div>
-        ))
+                {active && (
+                  <>
+                    <div className="join-row mt12">
+                      <span className="small bold">참여 {linked.length} / 8</span>
+                      <span className="rx-stack" style={{ marginLeft: 'auto' }}>
+                        {linked.slice(0, 6).map((m) => (
+                          <Avatar key={m.id} m={m} size={28} ring={false} />
+                        ))}
+                      </span>
+                      {linked.length > 6 && <span className="small bold muted">+{linked.length - 6}</span>}
+                    </div>
+                    <Link to={`/trips/${t.id}?tab=vote`} className="btn yellow mt12">☑️ 여행 투표하기</Link>
+                  </>
+                )}
+              </div>
+            )
+          })}
+        </div>
       )}
 
       {open && (

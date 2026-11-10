@@ -44,6 +44,8 @@ export type Trip = {
   mediaCount: number
   coverThumbs: string[]
   receiver?: Member
+  lat?: number
+  lng?: number
 }
 
 export type Progress = { done: number; total: number }

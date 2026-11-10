@@ -23,6 +23,8 @@ public class Trip {
     private String season;
     private String title;
     private String destination;
+    private Double lat;
+    private Double lng;
     private LocalDate startDate;
     private LocalDate endDate;
     private Long settleReceiverId;

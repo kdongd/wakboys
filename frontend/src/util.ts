@@ -5,7 +5,7 @@ export const seasonKo = (s: string) => (s === 'SUMMER' ? '여름' : '겨울')
 
 /** Edition box colours by season. */
 export const seasonColors = (s: string) =>
-  s === 'SUMMER' ? { from: '#ffb36b', to: '#ff7a3d', ink: '#fff' } : { from: '#2c5fd6', to: '#1a2f7a', ink: '#fff' }
+  s === 'SUMMER' ? { from: '#ffc27a', to: '#ff8a5c', ink: '#fff' } : { from: '#8fc4ff', to: '#6a86f5', ink: '#fff' }
 
 export function md(date?: string) {
   if (!date) return ''
